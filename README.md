@@ -1,5 +1,8 @@
 # Motor Insurance Frequency, Severity, and Pure Premium Analysis in Excel
 
+
+Full Workbook link: https://docs.google.com/spreadsheets/d/14PEGcqZe_PAD7uomSUmpDdDPf0isI7Ku/edit?usp=sharing&ouid=108592561068055681868&rtpof=true&sd=true
+
 Short description: Developed an Excel-based motor insurance pricing project that combines policy-level and claim-level data to analyze claim frequency, observed severity, and pure premium across rating segments.
 
 ## Overview
