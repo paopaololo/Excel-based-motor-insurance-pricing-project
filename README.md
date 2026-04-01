@@ -8,6 +8,7 @@ Short description: Developed an Excel-based motor insurance pricing project that
 ## Overview
 
 This project is an Excel-based actuarial analysis of a motor insurance portfolio using the `freMTPL2` dataset: https://www.kaggle.com/datasets/karansarpal/fremtpl2-french-motor-tpl-insurance-claims & https://www.kaggle.com/datasets/floser/fremtpl2sev. 
+
 It was built as a portfolio project to demonstrate practical actuarial thinking in a simple spreadsheet workflow.
 
 The analysis focuses on three core pricing concepts:
@@ -67,9 +68,9 @@ The main fields used in the final table include:
 
 ### Area
 
-The dataset includes a categorical variable Area, labeled from A to F, representing different geographic segments within the portfolio. While the exact mapping of these categories is not provided, they can be interpreted as proxies for geographic risk factors (e.g., urban vs. rural environments or varying traffic conditions).
+The dataset includes a categorical variable `Area`, labeled from A to F, representing different geographic segments within the portfolio. While the exact mapping of these categories is not provided, they can be interpreted as proxies for geographic risk factors (e.g., urban vs. rural environments or varying traffic conditions).
 
-In this analysis, Area is used as a segmentation variable to evaluate how claim frequency and severity differ across geographic groups.
+In this analysis, `Area` is used as a segmentation variable to evaluate how claim frequency and severity differ across geographic groups.
 
 ### Aggregating claim amount to the policy level
 
