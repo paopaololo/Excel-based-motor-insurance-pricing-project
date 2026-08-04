@@ -13,8 +13,8 @@ It was built as a portfolio project to demonstrate practical actuarial thinking 
 
 The analysis focuses on three core pricing concepts:
 
-- **Frequency**: how often claims occur
-- **Severity**: how large claims are when they occur
+- **Frequency**: how often claims occur (How many claims occur per unit of exposure, per policy-year in this case)
+- **Severity**: how large claims are when they occur (The claim amount)
 - **Pure Premium**: expected observed claim cost per unit of exposure
 
 The project segments results by **age band** and **geographic area**, and presents them through pivot-based analysis and a dashboard.
@@ -155,38 +155,91 @@ This means the severity measure in this project should be interpreted as **obser
 
 ## Pure Premium Analysis
 
-Pure premium was defined as:
+Pure premium represents the observed claim cost per unit of exposure.
+
+It can be derived from claim frequency and claim severity.
+
+### Step 1: Define frequency
 
 ```text
-Pure Premium = Total Observed Claim Amount / Total Exposure
+Frequency = Number of Claims / Exposure
 ```
 
-This represents expected observed claim cost per unit of exposure.
+Frequency measures how often claims occur per unit of exposure.
 
-In a fully aligned dataset, pure premium is often expressed as:
+### Step 2: Define severity
+
+```text
+Severity = Total Claim Amount / Number of Claims
+```
+
+Severity measures the average cost of a claim when a claim occurs.
+
+### Step 3: Derive pure premium
+
+Multiplying frequency by severity gives:
+
+```text
+Frequency × Severity
+
+= (Number of Claims / Exposure)
+  × (Total Claim Amount / Number of Claims)
+
+= Total Claim Amount / Exposure
+```
+
+The `Number of Claims` term appears in both the numerator and denominator, so it cancels out.
+
+Therefore:
+
+```text
+Pure Premium = Total Claim Amount / Exposure
+```
+
+Pure premium can therefore be interpreted as the claim cost generated per unit of policy exposure.
+
+### Why the direct calculation was used in this project
+
+In a fully aligned dataset, pure premium can be calculated as:
 
 ```text
 Pure Premium = Frequency × Severity
 ```
 
-However, that was not the cleanest approach here. In this project, frequency includes all reported claims, while severity excludes claims without usable claim amount data. Because those two measures are based on different claim universes, I calculated pure premium directly instead of forcing the decomposition.
+In this project, however, frequency and observed severity were not based on exactly the same claim population:
+
+- **Frequency** included all reported claims.
+- **Observed severity** included only claims with usable claim amounts.
+
+Because the claim counts were different, they could not cancel cleanly.
+
+Multiplying frequency by observed severity would implicitly assume that claims with missing amounts had the same average severity as claims with observed amounts. This would introduce estimated losses that were not actually present in the dataset.
+
+To avoid imputing unobserved claim amounts, pure premium was calculated directly as:
+
+```text
+Observed Pure Premium
+= Total Observed Claim Amount / Total Exposure
+```
 
 The pure premium pivot table used:
 
-- **Rows**: `Age_Band`
-- **Columns**: `Area`
-- **Values**:
+- **Rows:** `Age_Band`
+- **Columns:** `Area`
+- **Values:**
   - Sum of `Total_Claim_Amount`
   - Sum of `Exposure`
 
-Pure premium was then calculated as:
+The final calculation was:
 
 ```text
-Pure Premium = Sum(Total_Claim_Amount) / Sum(Exposure)
+Pure Premium
+= Sum(Total_Claim_Amount) / Sum(Exposure)
 ```
 
-This is the most defensible measure of expected observed loss cost given the available data.
+All policy exposure remained in the denominator because every policy contributed time at risk, including policies with no claims and policies whose reported claims did not have usable claim amounts.
 
+The result should therefore be interpreted as **observed pure premium**. Because some reported claims were missing usable claim amounts, it may understate the portfolio's complete loss cost.
 ## Dashboard
 
 I created a dashboard to summarize the portfolio-level and segment-level results.
